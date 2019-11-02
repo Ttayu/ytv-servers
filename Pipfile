@@ -9,7 +9,6 @@ pytest = "*"
 [packages]
 flask = "*"
 watson-developer-cloud = "*"
-gunicorn = "*"
 
 [requires]
 python_version = "3.7"
