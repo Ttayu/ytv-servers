@@ -21,8 +21,8 @@ class IBM:
 
     @classmethod
     def _classify(cls, file_name):
-        print(f"{IMAGE_DIR}/{file_name}")
-        url = urlopen(f"{IMAGE_DIR}/{file_name}")
+        print(f"{IMAGE_DIR}/new_{file_name}")
+        url = urlopen(f"{IMAGE_DIR}/new_{file_name}")
         result = cls.visual_recognition.classify(
             url, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
         ).get_result()
