@@ -38,7 +38,7 @@ class IBM:
                 max_score = element["score"]
                 fashion_sense = element["class"]
         if fashion_sense is None:
-            raise ValueError("not classified fashon sense.")
+            raise ValueError("not classified fashion sense.")
         return fashion_sense, max_score
 
 
@@ -49,8 +49,8 @@ def index():
 
 def get_image(data):
     file_name = Path(data["file_name"])
-    if not Path(IMAGE_DIR/file_name).exists():
-        raise FileNotFoundError(f"file not found: {file_name}")
+    if not Path(IMAGE_DIR / file_name).exists():
+        raise FileNotFoundError(f"file not found: {IMAGE_DIR / file_name}")
     fashion_sense, score = IBM.classify_fashion_sense(file_name)
     return {"id": data["id"], "class": fashion_sense, "score": score}
 
