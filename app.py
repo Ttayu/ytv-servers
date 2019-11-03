@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from urllib.request import urlopen
 
 from flask import Flask, jsonify, request
@@ -22,7 +21,8 @@ class IBM:
 
     @classmethod
     def _classify(cls, file_name):
-        url = urlopen(file_name)
+        print(f"{IMAGE_DIR}/file_name")
+        url = urlopen(f"{IMAGE_DIR}/file_name")
         result = cls.visual_recognition.classify(
             url, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
         ).get_result()
@@ -49,7 +49,7 @@ def index():
 
 
 def get_image(data):
-    file_name = Path(data["file_name"])
+    file_name = data["file_name"]
     fashion_sense, score = IBM.classify_fashion_sense(file_name)
     return {"id": data["id"], "class": fashion_sense, "score": score}
 
