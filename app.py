@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.request import urlopen
 
 from flask import Flask, jsonify, request
 from watson_developer_cloud import VisualRecognitionV3
@@ -7,7 +8,7 @@ from watson_developer_cloud import VisualRecognitionV3
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
-IMAGE_DIR = Path(os.environ["HOST_NAME"]) / "assets/images/resized"
+IMAGE_DIR = f"{os.environ['HOST_NAME']}/assets/images/resized"
 
 
 class IBM:
@@ -21,10 +22,10 @@ class IBM:
 
     @classmethod
     def _classify(cls, file_name):
-        with open(IMAGE_DIR / file_name, "rb") as f:
-            result = cls.visual_recognition.classify(
-                f, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
-            ).get_result()
+        url = urlopen(file_name)
+        result = cls.visual_recognition.classify(
+            url, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
+        ).get_result()
         return result
 
     @classmethod
@@ -49,8 +50,6 @@ def index():
 
 def get_image(data):
     file_name = Path(data["file_name"])
-    if not Path(IMAGE_DIR / file_name).exists():
-        raise FileNotFoundError(f"file not found: {IMAGE_DIR / file_name}")
     fashion_sense, score = IBM.classify_fashion_sense(file_name)
     return {"id": data["id"], "class": fashion_sense, "score": score}
 
