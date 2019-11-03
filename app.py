@@ -7,7 +7,7 @@ from watson_developer_cloud import VisualRecognitionV3
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
-IMAGE_DIR = f"{os.environ['HOST_NAME']}/assets/images/resized"
+IMAGE_DIR = f"{os.environ['HOST_NAME']}assets/images/resized"
 
 
 class IBM:
