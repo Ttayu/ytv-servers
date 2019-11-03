@@ -1,3 +1,4 @@
+import io
 import os
 from urllib.request import urlopen
 
@@ -23,8 +24,9 @@ class IBM:
     def _classify(cls, file_name):
         print(f"{IMAGE_DIR}/new_{file_name}")
         url = urlopen(f"{IMAGE_DIR}/new_{file_name}")
+        file = io.BytesIO(url.read())
         result = cls.visual_recognition.classify(
-            url.read(), threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
+            file, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
         ).get_result()
         return result
 
