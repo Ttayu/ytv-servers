@@ -7,6 +7,8 @@ from watson_developer_cloud import VisualRecognitionV3
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
+IMAGE_DIR = Path(os.environ["HOST_NAME"]) / "assets/images/resized"
+
 
 class IBM:
     api_key = os.environ["IBM_API_KEY"]
@@ -18,8 +20,8 @@ class IBM:
         return cls._get_max_class(result)
 
     @classmethod
-    def _classify(cls, images_file):
-        with open(images_file, "rb") as f:
+    def _classify(cls, file_name):
+        with open(IMAGE_DIR / file_name, "rb") as f:
             result = cls.visual_recognition.classify(
                 f, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
             ).get_result()
@@ -46,10 +48,10 @@ def index():
 
 
 def get_image(data):
-    image_path = Path(data["image_path"])
-    if not Path(image_path).exists():
-        raise FileNotFoundError(f"file not found: {image_path}")
-    fashion_sense, score = IBM.classify_fashion_sense(image_path)
+    file_name = Path(data["file_name"])
+    if not Path(IMAGE_DIR/file_name).exists():
+        raise FileNotFoundError(f"file not found: {file_name}")
+    fashion_sense, score = IBM.classify_fashion_sense(file_name)
     return {"id": data["id"], "class": fashion_sense, "score": score}
 
 
