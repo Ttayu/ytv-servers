@@ -24,7 +24,7 @@ class IBM:
         print(f"{IMAGE_DIR}/new_{file_name}")
         url = urlopen(f"{IMAGE_DIR}/new_{file_name}")
         result = cls.visual_recognition.classify(
-            url, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
+            url.read(), threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
         ).get_result()
         return result
 
