@@ -24,11 +24,12 @@ class IBM:
     def _classify(cls, file_name):
         print(f"{IMAGE_DIR}/new_{file_name}")
         url = urlopen(f"{IMAGE_DIR}/new_{file_name}")
-        print(url)
-        file = io.BytesIO(url.read())
-        print(file)
+        with open(f"images/new_{file_name}.png", "wb") as f:
+            f.write(url.read())
         result = cls.visual_recognition.classify(
-            file, threshold="0.0", classifier_ids="DefaultCustomModel_1445172307"
+            open(f"images/new_{file_name}.png", "rb"),
+            threshold="0.0",
+            classifier_ids="DefaultCustomModel_1445172307",
         ).get_result()
         return result
 
